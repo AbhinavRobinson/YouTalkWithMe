@@ -1,30 +1,29 @@
 const functions = require('firebase-functions');
-const cors = require('cors')({origin: true});
+const cors = require('cors')({ origin: true });
 const admin = require('firebase-admin');
 const serviceAccount = require('./service-account.json');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "http://fireship-lessons.firebaseio.com"
-});
+    databaseURL: "https://youtalkwithmecode.firebaseio.com"
+  });
 
 const { SessionsClient } = require('dialogflow');
 
-exports.dialogflowGateway = functions.https.onRequest((request, responce) => {
-    cors(request, responce, async () => {
-        const { queryInput, sessionId } = request.body;
-
-        const sessionClient = new SessionsClient({ credential: serviceAccount});
-        const session = sessionClient.sessionPath('youtalkwithme', sessionId);
-
-        const responces = await sessionClient.detectIntent({ session, queryInput });
-
-        const result = responces[0].queryResult;
-
-
-        responce.send(result);
+exports.dialogflowGateway = functions.https.onRequest((request, response) => {
+    cors(request, response, async () => {
+      const { queryInput, sessionId } = request.body;
+  
+      const sessionClient = new SessionsClient({ credentials: serviceAccount });
+      const session = sessionClient.sessionPath('youtalkwithmecode', sessionId);
+        
+      const responses = await sessionClient.detectIntent({ session, queryInput});
+  
+      const result = responses[0].queryResult;
+  
+      response.send(result);
     });
-});
+  });
 
 
 const { WebhookClient } = require('dialogflow-fulfillment');
@@ -32,7 +31,7 @@ const { WebhookClient } = require('dialogflow-fulfillment');
 exports.dialogflowWebhook = functions.https.onRequest(async (request, responce) => {
     const agent = new WebbhookClient({ request, responce});
 
-    console.log(JSON.stringify(request.body));
+    // console.log(JSON.stringify(request.body));
 
     const result = request.body.queryResult;
 
@@ -47,7 +46,7 @@ exports.dialogflowWebhook = functions.https.onRequest(async (request, responce) 
     async function userOnboardingHandler(agent){
 
         const db = admin.firestore();
-        const profile = db.collection('users').doc('jeffd23');
+        const profile = db.collection('users').doc('newuser');
 
         const { name, color } = result.parameters;
 
@@ -59,5 +58,6 @@ exports.dialogflowWebhook = functions.https.onRequest(async (request, responce) 
     intentMap.set('Default Welcome Intent', welcome);
     intentMap.set('Default Fallback Intent', fallback);
     intentMap.set('UserOnboarding', userOnboardingHandler);
+    agent.handleRequest(intentMap);
 });
 
