@@ -5,7 +5,7 @@ const serviceAccount = require('./service-account.json');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://youtalkwithmecode.firebaseio.com"
+    databaseURL: "https://youtalkwithmecodev2.firebaseio.com"
   });
 
 const { SessionsClient } = require('dialogflow');
@@ -15,7 +15,7 @@ exports.dialogflowGateway = functions.https.onRequest((request, response) => {
       const { queryInput, sessionId } = request.body;
   
       const sessionClient = new SessionsClient({ credentials: serviceAccount });
-      const session = sessionClient.sessionPath('youtalkwithmecode', sessionId);
+      const session = sessionClient.sessionPath('youtalkwithmecodev2', sessionId);
         
       const responses = await sessionClient.detectIntent({ session, queryInput});
   
@@ -31,7 +31,7 @@ const { WebhookClient } = require('dialogflow-fulfillment');
 exports.dialogflowWebhook = functions.https.onRequest(async (request, responce) => {
     const agent = new WebbhookClient({ request, responce});
 
-    // console.log(JSON.stringify(request.body));
+    console.log(JSON.stringify(request.body));
 
     const result = request.body.queryResult;
 
