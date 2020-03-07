@@ -60,4 +60,3 @@ exports.dialogflowWebhook = functions.https.onRequest(async (request, responce) 
     intentMap.set('UserOnboarding', userOnboardingHandler);
     agent.handleRequest(intentMap);
 });
-

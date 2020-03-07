@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-const dialogflowURL = 'https://us-central1-youtalkwithmecode.cloudfunctions.net/dialogflowGateway';
+const dialogflowURL = 'https://us-central1-youtalkwithmecodev2.cloudfunctions.net/dialogflowGateway';
 
 @Component({
   selector: 'app-chatbot',
