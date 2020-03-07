@@ -25,3 +25,39 @@ exports.dialogflowGateway = functions.https.onRequest((request, responce) => {
         responce.send(result);
     });
 });
+
+
+const { WebhookClient } = require('dialogflow-fulfillment');
+
+exports.dialogflowWebhook = functions.https.onRequest(async (request, responce) => {
+    const agent = new WebbhookClient({ request, responce});
+
+    console.log(JSON.stringify(request.body));
+
+    const result = request.body.queryResult;
+
+    function welcome(agent){
+        agent.add(`Welcome to YouTalkWithMe!`);
+    }
+
+    function fallback(agent){
+        agent.add(`Sorry, can you say again?`);
+    }
+
+    async function userOnboardingHandler(agent){
+
+        const db = admin.firestore();
+        const profile = db.collection('users').doc('jeffd23');
+
+        const { name, color } = result.parameters;
+
+        await profile.set({ name, color })
+        agent.add(`Welcome aboard Buddy!`);
+    }
+
+    let intentMap = new Map();
+    intentMap.set('Default Welcome Intent', welcome);
+    intentMap.set('Default Fallback Intent', fallback);
+    intentMap.set('UserOnboarding', userOnboardingHandler);
+});
+
