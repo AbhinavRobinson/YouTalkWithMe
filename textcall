@@ -1,0 +1,11 @@
+{
+  "body": {
+    "content": "ewoic2Vzc2lvbklkIjogImZvbyIsCiJxdWVyeUlucHV0Ijp7CiJ0ZXh0Ijp7CiJ0ZXh0IjogIlVwZGF0ZSBteSBwcm9maWxlIiwKImxhbmd1YWdlQ29kZTogImVuLVVTIgp9Cn0KfQ==",
+    "file": false,
+    "fileSize": false
+  },
+  "headers": {},
+  "method": "POST",
+  "title": "TestAPICode",
+  "url": "http://us-central1-youtalktomecode.cloudfunctions.net/dialogflowGateway"
+}
